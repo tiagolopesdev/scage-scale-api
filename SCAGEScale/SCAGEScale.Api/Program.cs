@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "users API",
+        Title = "scale API",
         Description = "Api builded using DDD pattern",
         Contact = new OpenApiContact
         {
@@ -32,8 +32,8 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(opt =>
 {
-    opt.RoutePrefix = string.Empty;
     opt.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    opt.RoutePrefix = string.Empty;
 });
 
 app.UseCors();
