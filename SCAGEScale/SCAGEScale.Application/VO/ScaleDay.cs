@@ -6,6 +6,5 @@ namespace SCAGEScale.Application.VO
         public Guid CameraOne { get; set; }
         public Guid CameraTwo { get; set; }
         public Guid CutDesk { get; set; }
-
     }
 }

@@ -12,31 +12,19 @@ namespace SCAGEScale.Application.Service
             var scaleDay = new ScaleDay();
             var scaleMonth = new List<ScaleDay>();
             bool newRange = true;
-            Random random = new();
             var indexs = new List<int>();
 
-            while (scaleMonth.Count < previewDto.days.Count) 
+            while (scaleMonth.Count < previewDto.days.Count)
             {
                 while (scaleDay.CameraOne == Guid.Empty || scaleDay.CameraTwo == Guid.Empty || scaleDay.CutDesk == Guid.Empty)
                 {
-                    int indexPeople = 0;
-                    while (newRange)
-                    {
-                        indexPeople = random.Next(0, previewDto.users.Count);
-
-                        var existIndex = indexs.Contains(indexPeople);
-
-                        if (!existIndex)
-                        {
-                            newRange = false;
-                        }
-                    }
+                    int indexPeople = RandomIndex(newRange, indexs, previewDto.users.Count);
 
                     if (scaleDay.CameraOne == Guid.Empty)
                     {
                         scaleDay.CameraOne = previewDto.users[indexPeople];
                         indexs.Add(indexPeople);
-                    } 
+                    }
                     else if (scaleDay.CameraTwo == Guid.Empty)
                     {
                         scaleDay.CameraTwo = previewDto.users[indexPeople];
@@ -57,6 +45,20 @@ namespace SCAGEScale.Application.Service
                 indexs.Clear();
             }
             return scaleMonth;
+        }
+
+        private static int RandomIndex(bool newRange, List<int> indexs, int sizeUserList)
+        {
+            int indexPeople = 0;
+            while (newRange)
+            {
+                indexPeople = new Random().Next(0, sizeUserList);
+
+                var existIndex = indexs.Contains(indexPeople);
+
+                newRange = existIndex;
+            }
+            return indexPeople;
         }
     }
 }
