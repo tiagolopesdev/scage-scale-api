@@ -6,6 +6,6 @@ namespace SCAGEScale.Application.ServiceSide
 {
     public interface IScaleService
     {
-        public Task<List<ScaleDay>> PreviewScale(PreviewDto previewDto);
+        public Task<List<ScaleMonthDto>> PreviewScale(PreviewDto previewDto);
     }
 }

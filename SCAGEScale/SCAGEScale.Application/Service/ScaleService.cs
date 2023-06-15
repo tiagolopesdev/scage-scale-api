@@ -1,5 +1,6 @@
 ﻿
 using SCAGEScale.Application.DTO;
+using SCAGEScale.Application.QuerySide;
 using SCAGEScale.Application.ServiceSide;
 using SCAGEScale.Application.VO;
 
@@ -7,7 +8,14 @@ namespace SCAGEScale.Application.Service
 {
     public class ScaleService : IScaleService
     {
-        public async Task<List<ScaleDay>> PreviewScale(PreviewDto previewDto)
+        private IScaleQuery _scaleQuery;
+
+        public ScaleService(IScaleQuery scaleQuery)
+        {
+            _scaleQuery = scaleQuery;
+        }
+
+        public async Task<List<ScaleMonthDto>> PreviewScale(PreviewDto previewDto)
         {
             var scaleDay = new ScaleDay();
             var scaleMonth = new List<ScaleDay>();
@@ -44,9 +52,8 @@ namespace SCAGEScale.Application.Service
 
                 indexs.Clear();
             }
-            return scaleMonth;
+            return await _scaleQuery.ScaleMonthMakedList(scaleMonth);
         }
-
         private static int RandomIndex(bool newRange, List<int> indexs, int sizeUserList)
         {
             int indexPeople = 0;

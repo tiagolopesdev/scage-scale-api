@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
+using SCAGEScale.Application.DTO;
 using SCAGEScale.Application.QuerySide;
 using SCAGEScale.Application.VO;
 
@@ -15,9 +16,9 @@ namespace SCAGEScale.Infrastructure.Queries
         {
             _configuration = configuration;
         }
-        public async Task<List<ScaleMonth>> ScaleMonthMakedList(List<ScaleDay> scaleDays)
+        public async Task<List<ScaleMonthDto>> ScaleMonthMakedList(List<ScaleDay> scaleDays)
         {
-            var scaleMonthList = new List<ScaleMonth>();
+            var scaleMonthList = new List<ScaleMonthDto>();
 
             foreach (var scaleDay in scaleDays)
             {
@@ -26,9 +27,8 @@ namespace SCAGEScale.Infrastructure.Queries
                 var userTwo = await GetUserByReferency(scaleDay.CameraTwo);
                 var userThree = await GetUserByReferency(scaleDay.CutDesk);
 
-                scaleMonthList.Add(new ScaleMonth(userOne, userTwo, userThree));
+                scaleMonthList.Add(new ScaleMonthDto(userOne, userTwo, userThree));
             }
-
             return scaleMonthList;
         }
 
