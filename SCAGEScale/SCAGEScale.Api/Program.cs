@@ -1,12 +1,15 @@
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using SCAGEScale.Application.QuerySide;
 using SCAGEScale.Application.Service;
 using SCAGEScale.Application.ServiceSide;
+using SCAGEScale.Infrastructure.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
+builder.Services.AddScoped<IScaleQuery, ScaleQueries>();
 builder.Services.AddScoped<IScaleService, ScaleService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>

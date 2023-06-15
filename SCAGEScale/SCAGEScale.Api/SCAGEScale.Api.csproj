@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SCAGEScale.Application\SCAGEScale.Application.csproj" />
+    <ProjectReference Include="..\SCAGEScale.Infrastructure\SCAGEScale.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
