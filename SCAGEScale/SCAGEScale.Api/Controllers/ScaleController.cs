@@ -6,6 +6,8 @@ using System.Net;
 
 namespace SCAGEScale.Api.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class ScaleController : ControllerBase
     {
         private readonly IScaleService _scaleService;
