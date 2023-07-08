@@ -1,20 +1,37 @@
 ﻿
 using SCAGEScale.Application.DTO;
 using SCAGEScale.Application.QuerySide;
+using SCAGEScale.Application.RepositorySide;
 using SCAGEScale.Application.ServiceSide;
+using SCAGEScale.Application.Utils;
 using SCAGEScale.Application.VO;
 
 namespace SCAGEScale.Application.Service
 {
     public class ScaleService : IScaleService
     {
+        private IScaleRepository _scaleRepository { get; set; }
         private IScaleQuery _scaleQuery;
 
-        public ScaleService(IScaleQuery scaleQuery)
+        public ScaleService(IScaleQuery scaleQuery, IScaleRepository scaleRepository)
         {
+            _scaleRepository = scaleRepository;
             _scaleQuery = scaleQuery;
         }
+        public async Task<Guid> CreateScale(CreateScaleDto createScaleDto)
+        {
+            var month = PropertiesCreateScale.PropertiesToCreateMonth(createScaleDto);
 
+            var scale = new List<PropertiesCreateScale>();
+
+            var monthId = (Guid)month.MonthId;
+            
+            scale = PropertiesCreateScale.PropertiesToCreateDay(createScaleDto.Days, monthId);
+
+            scale.Insert(0, month);
+
+            return await _scaleRepository.CreateScale(scale, monthId);
+        }
         public async Task<List<ScaleMonthDto>> PreviewScale(PreviewDto previewDto)
         {
             var scaleDay = new ScaleDay();
@@ -67,5 +84,6 @@ namespace SCAGEScale.Application.Service
             }
             return indexPeople;
         }
+
     }
 }

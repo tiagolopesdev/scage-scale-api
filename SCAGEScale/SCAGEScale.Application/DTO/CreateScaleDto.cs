@@ -3,7 +3,9 @@ namespace SCAGEScale.Application.DTO
 {
     public class CreateScaleDto
     {
-        public DayDto Day { get; set; }
-        public ScaleMonthDto Peoples { get; set; }
+        public string Name { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public List<DayDto> Days { get; set; }
     }
 }

@@ -16,6 +16,23 @@ namespace SCAGEScale.Api.Controllers
             _scaleService = scaleService;
         }
 
+        [HttpPost("createScale")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<RequestResponse>> CreateScale([FromBody] CreateScaleDto createScaleDto)
+        {
+            try
+            {
+                var response = await _scaleService.CreateScale(createScaleDto);
+
+                return Ok(RequestResponse.New("Escala criada com sucesso!", response));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(RequestResponse.Error(ex.Message));
+            }
+        }
+
         [HttpPost("generationScale")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
