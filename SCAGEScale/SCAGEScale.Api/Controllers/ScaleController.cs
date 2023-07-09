@@ -16,6 +16,24 @@ namespace SCAGEScale.Api.Controllers
             _scaleService = scaleService;
         }
 
+        [HttpGet()]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<RequestResponse>> GetAllScales()
+        {
+            try
+            {
+                var response = await _scaleService.GetAllScales();
+
+                throw new NotImplementedException();
+            } 
+            catch (Exception ex)
+            {
+                return BadRequest(RequestResponse.Error(ex.Message));
+            }
+        }
+
         [HttpPost("createScale")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
