@@ -18,6 +18,12 @@ namespace SCAGEScale.Application.Service
             _scaleRepository = scaleRepository;
             _scaleQuery = scaleQuery;
         }
+
+        public async Task<List<ScaleDto>> GetAllScales()
+        {
+            var responseQuery = await _scaleQuery.GetAllScales();
+            throw new NotImplementedException();
+        }
         public async Task<Guid> CreateScale(CreateScaleDto createScaleDto)
         {
             var month = PropertiesCreateScale.PropertiesToCreateMonth(createScaleDto);
