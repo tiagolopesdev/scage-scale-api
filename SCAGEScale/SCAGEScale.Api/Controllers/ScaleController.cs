@@ -16,11 +16,31 @@ namespace SCAGEScale.Api.Controllers
             _scaleService = scaleService;
         }
 
+        [HttpGet("singleScales")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<RequestResponse>> GetAllScalesSingle()
+        {
+            try
+            {
+                var response = await _scaleService.GetAllSingleScales();
+
+                return response != null ?
+                    Ok(RequestResponse.New("Sucesso ao obter as escalas!", response)) :
+                    BadRequest(RequestResponse.Error("Não foi possível obter as escalas"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(RequestResponse.Error(ex.Message));
+            }
+        }
+
         [HttpGet()]
         [Produces("application/json")]
         [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<RequestResponse>> GetAllScales()
+        public async Task<ActionResult<RequestResponse>> GetAllScalesComplete()
         {
             try
             {

@@ -3,7 +3,6 @@ using SCAGEScale.Application.DTO;
 using SCAGEScale.Application.QuerySide;
 using SCAGEScale.Application.RepositorySide;
 using SCAGEScale.Application.ServiceSide;
-using SCAGEScale.Application.Utils;
 using SCAGEScale.Application.VO;
 
 namespace SCAGEScale.Application.Service
@@ -91,5 +90,9 @@ namespace SCAGEScale.Application.Service
             return indexPeople;
         }
 
+        public async Task<List<ScaleDto>?> GetAllSingleScales()
+        {
+            return await _scaleQuery.GetAllSingleScales();
+        }
     }
 }

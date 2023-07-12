@@ -6,6 +6,7 @@ namespace SCAGEScale.Application.ServiceSide
     {
         public Task<Guid> CreateScale(CreateScaleDto createScaleDto);
         public Task<List<ScaleDto>> GetAllScales();
+        public Task<List<ScaleDto>?> GetAllSingleScales();
         public Task<List<ScaleMonthDto>> PreviewScale(PreviewDto previewDto);
     }
 }
