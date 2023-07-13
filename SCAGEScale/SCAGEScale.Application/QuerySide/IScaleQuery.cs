@@ -8,6 +8,7 @@ namespace SCAGEScale.Application.QuerySide
     {
         public Task<List<ScaleDto>> GetAllScales();
         public Task<List<ScaleDto>?> GetAllSingleScales();
+        public Task<ScaleDto> GetScaleById(Guid id);
         public Task<ReferencyUser> GetUserByReferency(Guid userId);
         public Task<List<ScaleMonthDto>> ScaleMonthMakedList(List<ScaleDay> scaleDays);
     }
