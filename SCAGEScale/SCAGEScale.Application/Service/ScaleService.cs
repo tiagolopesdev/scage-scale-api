@@ -18,6 +18,11 @@ namespace SCAGEScale.Application.Service
             _scaleQuery = scaleQuery;
         }
 
+        public async Task<ScaleDto> GetScaleById(Guid id)
+        {
+            return await _scaleQuery.GetScaleById(id);            
+        }
+
         public async Task<List<ScaleDto>> GetAllScales()
         {
             var responseQuery = await _scaleQuery.GetAllScales();
