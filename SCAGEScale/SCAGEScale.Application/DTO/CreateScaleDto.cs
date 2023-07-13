@@ -6,6 +6,6 @@ namespace SCAGEScale.Application.DTO
         public string Name { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public List<DayDto> Days { get; set; }
+        public List<DayOnlyReferencyDto> Days { get; set; }
     }
 }
