@@ -16,15 +16,21 @@ namespace SCAGEScale.Application.DTO
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<DayDto>? Days { get; set; }
 
-        public ScaleDto(Guid id, string name, int transmissions, DateTime start, DateTime end, StatusScaleVo status, List<DayDto>? days = null)
+
+        public static ScaleDto NewDto(Guid id, string name, int transmissions, DateTime start, DateTime end, string status, List<DayDto>? days = null)
         {
-            Id = id;
-            Name = name;
-            Transmissions = transmissions;
-            Start = start;
-            End = end;
-            Status = status;
-            if (days != null) Days = days;
+            var dto = new ScaleDto
+            {
+                Id = id,
+                Name = name,
+                Transmissions = transmissions,
+                Start = start,
+                End = end,
+                Status = StatusScaleVo.COMPLETE.ToString() == status ? StatusScaleVo.COMPLETE : StatusScaleVo.IN_PROGRESS
+            };
+            if (days != null) dto.Days = days;
+
+            return dto;
         }
     }
 }
