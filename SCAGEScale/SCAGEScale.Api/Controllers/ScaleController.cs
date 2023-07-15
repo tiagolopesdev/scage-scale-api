@@ -11,9 +11,29 @@ namespace SCAGEScale.Api.Controllers
     public class ScaleController : ControllerBase
     {
         private readonly IScaleService _scaleService;
-        public ScaleController(IScaleService scaleService) 
+        public ScaleController(IScaleService scaleService)  
         {
             _scaleService = scaleService;
+        }
+
+        [HttpGet("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<RequestResponse>> GetScaleById(Guid id)
+        {
+            try
+            {
+                var response = await _scaleService.GetScaleById(id);
+
+                return response != null ?
+                    Ok(RequestResponse.New("Sucesso ao obter escala!", response)) :
+                    BadRequest(RequestResponse.Error("Não foi possível obter a escala"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(RequestResponse.Error(ex.Message));
+            }
         }
 
         [HttpGet("singleScales")]
