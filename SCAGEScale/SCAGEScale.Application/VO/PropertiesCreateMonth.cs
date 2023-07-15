@@ -59,7 +59,7 @@ namespace SCAGEScale.Application.VO
             return monthProperties;
         }
 
-        public static List<PropertiesCreateScale> PropertiesToCreateDay(List<DayDto> days, Guid monthId)
+        public static List<PropertiesCreateScale> PropertiesToCreateDay(List<DayOnlyReferencyDto> days, Guid monthId)
         {
             var listDays = new List<PropertiesCreateScale>();
 
