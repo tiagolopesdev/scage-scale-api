@@ -99,5 +99,9 @@ namespace SCAGEScale.Application.Service
         {
             return await _scaleQuery.GetAllSingleScales();
         }
+        public async Task<List<ScaleDto>?> GetAllSingleByFilterScales(string filter)
+        {
+            return await _scaleQuery.GetAllSingleByFilterScales(filter);
+        }
     }
 }

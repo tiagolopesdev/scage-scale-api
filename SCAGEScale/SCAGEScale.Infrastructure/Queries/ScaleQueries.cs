@@ -163,5 +163,33 @@ namespace SCAGEScale.Infrastructure.Queries
                 }
             }
         }
+
+        public async Task<List<ScaleDto>?> GetAllSingleByFilterScales(string filter)
+        {
+            using (var connection = new MySqlConnection(ConnectionString))
+            {
+                try
+                {
+                    var response = await connection.QueryAsync<SingleScaleAggregate>(
+                        "SELECT " +
+                            "m.id as Id, " +
+                            "m.name as Name, " +
+                            "m.status as Status, " +
+                            "m.transmissions as Transmissions, " +
+                            "m.start as Start, " +
+                            "m.end as End " +
+                        "FROM month AS m " +
+                        "WHERE m.isEnable = true AND m.name LIKE @filter;",
+                        new { filter }
+                    );
+
+                    return response.Count() == 0 ? null : response.ToDTOList();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
     }
 }

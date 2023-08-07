@@ -40,11 +40,13 @@ namespace SCAGEScale.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<RequestResponse>> GetAllScalesSingle()
+        public async Task<ActionResult<RequestResponse>> GetAllScalesSingle([FromQuery] string? filter)
         {
             try
             {
-                var response = await _scaleService.GetAllSingleScales();
+                var response = filter == null ? 
+                    await _scaleService.GetAllSingleScales() :
+                    await _scaleService.GetAllSingleByFilterScales(filter);
 
                 return response != null ?
                     Ok(RequestResponse.New("Sucesso ao obter as escalas!", response)) :
