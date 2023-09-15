@@ -3,7 +3,6 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 using SCAGEScale.Application.RepositorySide;
-using SCAGEScale.Application.Utils;
 using SCAGEScale.Application.VO;
 
 namespace SCAGEScale.Infrastructure.Repositories
@@ -16,8 +15,9 @@ namespace SCAGEScale.Infrastructure.Repositories
         public ScaleRepository(IConfiguration configuration)
         {
             _configuration = configuration;
-        }
-        public async Task<Guid> CreateScale(List<PropertiesCreateScale> scale, Guid monthId)
+        }        
+
+        public async Task<Guid> TransitionsScale(List<PropertiesCreateScale> scale, Guid monthId)
         {
             using (var connection = new MySqlConnection(ConnectionString))
             {
@@ -31,9 +31,9 @@ namespace SCAGEScale.Infrastructure.Repositories
                     {
                         try
                         {
-                            var response = await connection.ExecuteAsync(properties.Sql, properties.Values, transaction: transation);                       
+                            var response = await connection.ExecuteAsync(properties.Sql, properties.Values, transaction: transation);
                             qntExecutionSuccess++;
-                        } 
+                        }
                         catch (Exception ex)
                         {
                             qntExecutionSuccess--;
@@ -42,11 +42,11 @@ namespace SCAGEScale.Infrastructure.Repositories
                     if (qntExecutionSuccess == scale.Count)
                     {
                         transation.Commit();
-                    } 
+                    }
                     else
                     {
                         transation.Rollback();
-                        throw new Exception("Não foi possível gerar escala");
+                        throw new Exception("Não foi possível gerar ou atualizar a escala");
                     }
                 }
                 connection.Close();

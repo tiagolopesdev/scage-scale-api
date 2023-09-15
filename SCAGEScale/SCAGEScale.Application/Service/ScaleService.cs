@@ -10,7 +10,7 @@ namespace SCAGEScale.Application.Service
     public class ScaleService : IScaleService
     {
         private IScaleRepository _scaleRepository { get; set; }
-        private IScaleQuery _scaleQuery;
+        private readonly IScaleQuery _scaleQuery;
 
         public ScaleService(IScaleQuery scaleQuery, IScaleRepository scaleRepository)
         {
@@ -23,24 +23,17 @@ namespace SCAGEScale.Application.Service
             return await _scaleQuery.GetScaleById(id);            
         }
 
-        public async Task<List<ScaleDto>> GetAllScales()
-        {
-            var responseQuery = await _scaleQuery.GetAllScales();
-            throw new NotImplementedException();
-        }
         public async Task<Guid> CreateScale(CreateScaleDto createScaleDto)
         {
             var month = PropertiesCreateScale.PropertiesToCreateMonth(createScaleDto);
 
-            var scale = new List<PropertiesCreateScale>();
-
             var monthId = (Guid)month.MonthId;
             
-            scale = PropertiesCreateScale.PropertiesToCreateDay(createScaleDto.Days, monthId);
+            var scale = PropertiesCreateScale.PropertiesToCreateDay(createScaleDto.Days, monthId);
 
             scale.Insert(0, month);
 
-            return await _scaleRepository.CreateScale(scale, monthId);
+            return await _scaleRepository.TransitionsScale(scale, monthId);
         }
         public async Task<List<ScaleMonthDto>> PreviewScale(PreviewDto previewDto)
         {
@@ -102,6 +95,17 @@ namespace SCAGEScale.Application.Service
         public async Task<List<ScaleDto>?> GetAllSingleByFilterScales(string filter)
         {
             return await _scaleQuery.GetAllSingleByFilterScales(filter);
+        }
+
+        public async Task<Guid> UpdateScale(UpdateScaleDto updateScaleDto)
+        {
+            var month = PropertiesCreateScale.PropertiesToUpdateMonth(updateScaleDto);
+
+            var scale = PropertiesCreateScale.PropertiesToUpdateDay(updateScaleDto.Days, updateScaleDto.Id);
+
+            scale.Insert(0, month);
+
+            return await _scaleRepository.TransitionsScale(scale, updateScaleDto.Id);
         }
     }
 }

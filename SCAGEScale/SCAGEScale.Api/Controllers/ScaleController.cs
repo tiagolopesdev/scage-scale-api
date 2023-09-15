@@ -58,18 +58,17 @@ namespace SCAGEScale.Api.Controllers
             }
         }
 
-        [HttpGet()]
+        [HttpPut("updateScale")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<RequestResponse>> GetAllScalesComplete()
+        public async Task<ActionResult<RequestResponse>> UpdateScale([FromBody] UpdateScaleDto updateScaleDto)
         {
             try
             {
-                var response = await _scaleService.GetAllScales();
+                var response = await _scaleService.UpdateScale(updateScaleDto);
 
-                throw new NotImplementedException();
-            } 
+                return Ok(RequestResponse.New("Escala atualizada com sucesso!", response));
+            }
             catch (Exception ex)
             {
                 return BadRequest(RequestResponse.Error(ex.Message));
