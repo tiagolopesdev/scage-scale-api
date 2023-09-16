@@ -8,5 +8,6 @@ namespace SCAGEScale.Application.DTO
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public List<DayOnlyReferencyUpdateDto> Days { get; set; }
+        public bool IsEnable { get; set; }
     }
 }

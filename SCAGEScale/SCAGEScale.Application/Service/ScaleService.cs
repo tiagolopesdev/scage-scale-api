@@ -99,9 +99,11 @@ namespace SCAGEScale.Application.Service
 
         public async Task<Guid> UpdateScale(UpdateScaleDto updateScaleDto)
         {
+            var daysExist = await GetScaleById(updateScaleDto.Id);
+
             var month = PropertiesCreateScale.PropertiesToUpdateMonth(updateScaleDto);
 
-            var scale = PropertiesCreateScale.PropertiesToUpdateDay(updateScaleDto.Days, updateScaleDto.Id);
+            var scale = PropertiesCreateScale.PropertiesToUpdateDay(updateScaleDto.Days, updateScaleDto.Id, daysExist.Days);
 
             scale.Insert(0, month);
 

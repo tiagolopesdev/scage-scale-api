@@ -50,7 +50,8 @@ namespace SCAGEScale.Application.VO
             return new PropertiesCreateScale(sql, properties); ;
         }
 
-        public static List<PropertiesCreateScale> PropertiesToUpdateDay(List<DayOnlyReferencyUpdateDto> days, Guid monthId)
+        public static List<PropertiesCreateScale> PropertiesToUpdateDay(List<DayOnlyReferencyUpdateDto> days, 
+            Guid monthId, List<DayDto> daysToCompare)
         {
             var listDays = new List<PropertiesCreateScale>();
 
@@ -61,6 +62,7 @@ namespace SCAGEScale.Application.VO
                     "cameraTwo = @cameraTwo, " +
                     "cutDesk = @cutDesk, " +
                     "month = @month, " +
+                    "isEnable = @isEnable, " +
                     "modifiedOn = @modifiedOn, " +
                     "modifiedBy = @modifiedBy " +
                 "WHERE id = @id"; 

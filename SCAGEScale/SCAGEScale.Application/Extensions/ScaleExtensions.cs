@@ -14,18 +14,22 @@ namespace SCAGEScale.Application.Extensions
                 x.NameDay,
                 x.DateDay,
                 x.Month,
+                x.IsEnableDay,
                 x.IdUserOne,
                 x.NameUserOne,
                 x.EmailUserOne,
                 x.SexUserOne,
+                x.IsEnableUserOne,
                 x.IdUserTwo,
                 x.NameUserTwo,
                 x.EmailUserTwo,
                 x.SexUserTwo,
+                x.IsEnableUserTwo,
                 x.IdUserThree,
                 x.NameUserThree,
                 x.EmailUserThree,
                 x.SexUserThree,
+                x.IsEnableUserThree
             });
 
             var scaleGroup = scale.ToList().GroupBy(x => new
@@ -35,7 +39,8 @@ namespace SCAGEScale.Application.Extensions
                 x.Transmissions,
                 x.Start,
                 x.End,
-                x.Status
+                x.Status,
+                x.IsEnable
             }).ElementAt(0);
 
             var dayList = new List<DayDto>();
@@ -46,19 +51,22 @@ namespace SCAGEScale.Application.Extensions
                     item.Key.IdUserOne,
                     item.Key.NameUserOne,
                     item.Key.EmailUserOne,
-                    item.Key.SexUserOne
+                    item.Key.SexUserOne,
+                    item.Key.IsEnableUserOne
                 );
                 var cameraTwo = UserDto.New(
                     item.Key.IdUserTwo,
                     item.Key.NameUserTwo,
                     item.Key.EmailUserTwo,
-                    item.Key.SexUserTwo
+                    item.Key.SexUserTwo,
+                    item.Key.IsEnableUserTwo
                 );
                 var cutDesk = UserDto.New(
                     item.Key.IdUserThree,
                     item.Key.NameUserThree,
                     item.Key.EmailUserThree,
-                    item.Key.SexUserThree
+                    item.Key.SexUserThree,
+                    item.Key.IsEnableUserThree
                 );
 
                 dayList.Add(DayDto.New(
@@ -66,14 +74,16 @@ namespace SCAGEScale.Application.Extensions
                     item.Key.NameDay,
                     item.Key.DateDay,
                     item.Key.Month,
+                    item.Key.IsEnableDay,
                     cameraOne,
                     cameraTwo,
-                    cutDesk)
-                );
+                    cutDesk
+                    ));
             }
 
-            var scaleDto = ScaleDto.NewDto(scaleGroup.Key.Id, scaleGroup.Key.Name, scaleGroup.Key.Transmissions,
-                            scaleGroup.Key.Start, scaleGroup.Key.End, scaleGroup.Key.Status, dayList
+            var scaleDto = ScaleDto.New(scaleGroup.Key.Id, scaleGroup.Key.Name, scaleGroup.Key.Transmissions,
+                            scaleGroup.Key.IsEnable, scaleGroup.Key.Start, scaleGroup.Key.End,
+                            scaleGroup.Key.Status, dayList
                         );
 
             return scaleDto;
@@ -84,10 +94,13 @@ namespace SCAGEScale.Application.Extensions
 
             foreach (var aggregate in singleScaleAggregates)
             {
-                listScaleDto.Add(ScaleDto.NewDto(
+                var isEnable = aggregate.IsEnable ? 1 : 0;
+
+                listScaleDto.Add(ScaleDto.New(
                     aggregate.Id,
                     aggregate.Name,
                     aggregate.Transmissions,
+                    isEnable,
                     aggregate.Start,
                     aggregate.End,
                     aggregate.Status.ToString())

@@ -6,7 +6,6 @@ using SCAGEScale.Application.DTO;
 using SCAGEScale.Application.Extensions;
 using SCAGEScale.Application.QuerySide;
 using SCAGEScale.Application.VO;
-using System;
 
 namespace SCAGEScale.Infrastructure.Queries
 {
@@ -34,22 +33,27 @@ namespace SCAGEScale.Infrastructure.Queries
                             "m.start as Start, " +
                             "m.end as End, " +
                             "m.status as Status, " +
+                            "m.isEnable AS IsEnable, " +
                             "d.id as IdDay, " +
                             "d.name as NameDay, " +
                             "d.date as DateDay, " +
                             "d.month as Month, " +
+                            "d.isEnable AS IsEnableDay, " +
                             "userOne.id as IdUserOne, " +
                             "userOne.name as NameUserOne, " +
                             "userOne.email as EmailUserOne, " +
                             "userOne.sex as SexUserOne, " +
+                            "userOne.isEnable AS IsEnableUserOne, " +
                             "userTwo.id as IdUserTwo, " +
                             "userTwo.name as NameUserTwo, " +
                             "userTwo.email as EmailUserTwo, " +
                             "userTwo.sex as SexUserTwo, " +
+                            "userTwo.isEnable AS IsEnableUserTwo, " +
                             "userThree.id as IdUserThree, " +
                             "userThree.name as NameUserThree, " +
                             "userThree.email as EmailUserThree, " +
-                            "userThree.sex as SexUserThree " +
+                            "userThree.sex as SexUserThree, " +
+                            "userThree.isEnable AS IsEnableUserThree " +
                         "FROM month AS m " +
                         "INNER JOIN day AS d ON m.id = d.month AND d.isEnable = 1 " +
                         "INNER JOIN users AS userOne ON d.cameraOne = userOne.id AND userOne.isEnable = 1 " +
@@ -81,7 +85,8 @@ namespace SCAGEScale.Infrastructure.Queries
                             "m.status as Status, " +
                             "m.transmissions as Transmissions, " +
                             "m.start as Start, " +
-                            "m.end as End " +
+                            "m.end as End, " +
+                            "m.isEnable AS IsEnable " +
                         "FROM month AS m " +
                         "WHERE m.isEnable = true; "
                     );
@@ -107,6 +112,7 @@ namespace SCAGEScale.Infrastructure.Queries
                             "u.name as Name, " +
                             "u.email as Email, " +
                             "u.sex as Sex " +
+                            "u.isEnable AS IsEnable " +
                         "FROM users as u " +
                         "WHERE isEnable = 1 AND u.id = @id;");
 
@@ -150,12 +156,13 @@ namespace SCAGEScale.Infrastructure.Queries
                             "u.name as Name, " +
                             "u.email as Email, " +
                             "u.sex as Sex " +
+                            "u.isEnable AS IsEnable " +
                         "FROM users as u " +
                         "WHERE isEnable = 1 AND u.id = @id;", new { id = userId });
 
-                    if (response.Count() == 0) return null;
-
-                    return response.ToList().FirstOrDefault();
+                    return response.Count() != 0 ?
+                        response.ToList().FirstOrDefault() :
+                        null;
                 }
                 catch (Exception ex)
                 {
@@ -178,6 +185,7 @@ namespace SCAGEScale.Infrastructure.Queries
                             "m.transmissions as Transmissions, " +
                             "m.start as Start, " +
                             "m.end as End " +
+                            "m.isEnable AS IsEnable" +
                         "FROM month AS m " +
                         "WHERE m.isEnable = true AND m.name LIKE @filter;",
                         new { filter }

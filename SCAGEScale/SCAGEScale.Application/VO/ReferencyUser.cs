@@ -7,5 +7,6 @@ namespace SCAGEScale.Application.VO
         public string Name { get; set; }
         public string Email { get; set; }
         public string Sex { get; set; }
+        public bool IsEnable { get; set; }
     }
 }
