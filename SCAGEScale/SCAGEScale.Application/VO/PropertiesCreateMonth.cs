@@ -27,6 +27,7 @@ namespace SCAGEScale.Application.VO
                     "start = @start, " +
                     "end = @end, " +
                     "status = @status, " +
+                    "isEnable = @isEnable, " +
                     "modifiedOn = @modifiedOn, " +
                     "modifiedBy = @modifiedBy " +
                 "WHERE id = @id";
@@ -42,6 +43,7 @@ namespace SCAGEScale.Application.VO
                 transmissions = month.Days.Count,
                 start = month.Start,
                 end = month.End,
+                isEnable = month.IsEnable,
                 status =  scaleStatus,
                 modifiedOn = DateTime.Now,
                 modifiedBy = Guid.NewGuid()
@@ -78,6 +80,7 @@ namespace SCAGEScale.Application.VO
                     cameraTwo = day.CameraTwo,
                     cutDesk = day.CutDesk,
                     month = monthId,
+                    isEnable = day.IsEnable,
                     createdOn = DateTime.Now,
                     createdBy = Guid.NewGuid()
                 };

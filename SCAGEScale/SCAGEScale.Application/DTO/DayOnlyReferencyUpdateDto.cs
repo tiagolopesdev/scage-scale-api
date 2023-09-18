@@ -9,5 +9,6 @@ namespace SCAGEScale.Application.DTO
         public Guid CameraOne { get; set; }
         public Guid CameraTwo { get; set; }
         public Guid CutDesk { get; set; }
+        public bool IsEnable { get; set; }
     }
 }
