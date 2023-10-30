@@ -9,7 +9,7 @@ namespace SCAGEScale.Application.Service
 {
     public class ScaleService : IScaleService
     {
-        private IScaleRepository _scaleRepository { get; set; }
+        private readonly IScaleRepository _scaleRepository;
         private readonly IScaleQuery _scaleQuery;
 
         public ScaleService(IScaleQuery scaleQuery, IScaleRepository scaleRepository)
@@ -20,63 +20,81 @@ namespace SCAGEScale.Application.Service
 
         public async Task<ScaleDto> GetScaleById(Guid id)
         {
-            return await _scaleQuery.GetScaleById(id);            
+            return await _scaleQuery.GetScaleById(id);
         }
 
         public async Task<Guid> CreateScale(CreateScaleDto createScaleDto)
         {
-            var scaleExists = await GetAllSingleByFilterScales(createScaleDto.Name);
+            try
+            {
+                var scaleExists = await _scaleQuery.GetAllSingleByFilterScales(createScaleDto.Name);
 
-            if (scaleExists.Count > 0) throw new Exception($"Escala referente ao mês de {createScaleDto.Name}, já existe.");
+                if (scaleExists != null && scaleExists.Count > 0) throw new Exception($"Escala referente ao mês de {createScaleDto.Name}, já existe.");
 
-            var month = PropertiesCreateScale.PropertiesToCreateMonth(createScaleDto);
+                var month = PropertiesCreateScale.PropertiesToCreateMonth(createScaleDto);
 
-            var monthId = (Guid)month.MonthId;
-            
-            var scale = PropertiesCreateScale.PropertiesToCreateDay(createScaleDto.Days, monthId);
+                var monthId = (Guid)month.MonthId;
 
-            scale.Insert(0, month);
+                var scale = PropertiesCreateScale.PropertiesToCreateDay(createScaleDto.Days, monthId);
 
-            return await _scaleRepository.TransitionsScale(scale, monthId);
+                scale.Insert(0, month);
+
+                return await _scaleRepository.TransitionsScale(scale, monthId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public async Task<List<ScaleMonthDto>> PreviewScale(PreviewDto previewDto)
         {
-            var scaleDay = new ScaleDay();
-            var scaleMonth = new List<ScaleDay>();
-            bool newRange = true;
-            var indexs = new List<int>();
-
-            while (scaleMonth.Count < previewDto.days.Count)
+            try
             {
-                while (scaleDay.CameraOne == Guid.Empty || scaleDay.CameraTwo == Guid.Empty || scaleDay.CutDesk == Guid.Empty)
+                var scaleExists = await _scaleQuery.GetAllSingleByFilterScales(previewDto.Name);
+
+                if (scaleExists != null && scaleExists.Count > 0) throw new Exception($"Escala referente ao mês de {previewDto.Name}, já existe.");
+
+                var scaleDay = new ScaleDay();
+                var scaleMonth = new List<ScaleDay>();
+                bool newRange = true;
+                var indexs = new List<int>();
+
+                while (scaleMonth.Count < previewDto.Days.Count)
                 {
-                    int indexPeople = RandomIndex(newRange, indexs, previewDto.users.Count);
+                    while (scaleDay.CameraOne == Guid.Empty || scaleDay.CameraTwo == Guid.Empty || scaleDay.CutDesk == Guid.Empty)
+                    {
+                        int indexPeople = RandomIndex(newRange, indexs, previewDto.Users.Count);
 
-                    if (scaleDay.CameraOne == Guid.Empty)
-                    {
-                        scaleDay.CameraOne = previewDto.users[indexPeople];
-                        indexs.Add(indexPeople);
+                        if (scaleDay.CameraOne == Guid.Empty)
+                        {
+                            scaleDay.CameraOne = previewDto.Users[indexPeople];
+                            indexs.Add(indexPeople);
+                        }
+                        else if (scaleDay.CameraTwo == Guid.Empty)
+                        {
+                            scaleDay.CameraTwo = previewDto.Users[indexPeople];
+                            indexs.Add(indexPeople);
+                        }
+                        else if (scaleDay.CutDesk == Guid.Empty)
+                        {
+                            scaleDay.CutDesk = previewDto.Users[indexPeople];
+                            indexs.Add(indexPeople);
+                        }
+                        newRange = true;
                     }
-                    else if (scaleDay.CameraTwo == Guid.Empty)
-                    {
-                        scaleDay.CameraTwo = previewDto.users[indexPeople];
-                        indexs.Add(indexPeople);
-                    }
-                    else if (scaleDay.CutDesk == Guid.Empty)
-                    {
-                        scaleDay.CutDesk = previewDto.users[indexPeople];
-                        indexs.Add(indexPeople);
-                    }
-                    newRange = true;
+
+                    scaleMonth.Add(scaleDay);
+
+                    scaleDay = new ScaleDay();
+
+                    indexs.Clear();
                 }
-
-                scaleMonth.Add(scaleDay);
-
-                scaleDay = new ScaleDay();
-
-                indexs.Clear();
+                return await _scaleQuery.ScaleMonthMakedList(scaleMonth);
             }
-            return await _scaleQuery.ScaleMonthMakedList(scaleMonth);
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         private static int RandomIndex(bool newRange, List<int> indexs, int sizeUserList)
         {
