@@ -25,6 +25,10 @@ namespace SCAGEScale.Application.Service
 
         public async Task<Guid> CreateScale(CreateScaleDto createScaleDto)
         {
+            var scaleExists = await GetAllSingleByFilterScales(createScaleDto.Name);
+
+            if (scaleExists.Count > 0) throw new Exception($"Escala referente ao mês de {createScaleDto.Name}, já existe.");
+
             var month = PropertiesCreateScale.PropertiesToCreateMonth(createScaleDto);
 
             var monthId = (Guid)month.MonthId;
