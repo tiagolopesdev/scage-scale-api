@@ -69,7 +69,6 @@ namespace SCAGEScale.Infrastructure.Queries
                     throw ex;
                 }
             }
-            throw new NotImplementedException();
         }
 
         public async Task<List<ScaleDto>?> GetAllSingleScales()
@@ -155,7 +154,7 @@ namespace SCAGEScale.Infrastructure.Queries
                             "u.id as Id, " +
                             "u.name as Name, " +
                             "u.email as Email, " +
-                            "u.sex as Sex " +
+                            "u.sex as Sex, " +
                             "u.isEnable AS IsEnable " +
                         "FROM users as u " +
                         "WHERE isEnable = 1 AND u.id = @id;", new { id = userId });
@@ -184,8 +183,8 @@ namespace SCAGEScale.Infrastructure.Queries
                             "m.status as Status, " +
                             "m.transmissions as Transmissions, " +
                             "m.start as Start, " +
-                            "m.end as End " +
-                            "m.isEnable AS IsEnable" +
+                            "m.end as End, " +
+                            "m.isEnable AS IsEnable " +
                         "FROM month AS m " +
                         "WHERE m.isEnable = true AND m.name LIKE @filter;",
                         new { filter }

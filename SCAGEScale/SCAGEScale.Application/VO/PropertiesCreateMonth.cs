@@ -40,7 +40,7 @@ namespace SCAGEScale.Application.VO
             {
                 id = month.Id,
                 name = month.Name,
-                transmissions = month.Days.Count,
+                transmissions = month.Days.Where(item => item.IsEnable).Count(),
                 start = month.Start,
                 end = month.End,
                 isEnable = month.IsEnable,
@@ -53,7 +53,7 @@ namespace SCAGEScale.Application.VO
         }
 
         public static List<PropertiesCreateScale> PropertiesToUpdateDay(List<DayOnlyReferencyUpdateDto> days, 
-            Guid monthId, List<DayDto> daysToCompare)
+            Guid monthId)
         {
             var listDays = new List<PropertiesCreateScale>();
 
