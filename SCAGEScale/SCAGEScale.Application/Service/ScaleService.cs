@@ -50,10 +50,6 @@ namespace SCAGEScale.Application.Service
         {
             try
             {
-                var scaleExists = await _scaleQuery.GetAllSingleByFilterScales(previewDto.Name);
-
-                if (scaleExists != null && scaleExists.Count > 0) throw new Exception($"Escala referente ao mês de {previewDto.Name}, já existe.");
-
                 var scaleDay = new ScaleDay();
                 var scaleMonth = new List<ScaleDay>();
                 bool newRange = true;
