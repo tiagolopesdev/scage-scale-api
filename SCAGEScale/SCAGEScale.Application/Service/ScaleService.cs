@@ -21,7 +21,13 @@ namespace SCAGEScale.Application.Service
 
         public async Task<ScaleDto> GetScaleById(Guid id)
         {
-            return await _scaleQuery.GetScaleById(id);
+            var response = await _scaleQuery.GetScaleById(id);
+
+            var daysOrdered = response.Days.OrderBy(item => item.DateTime).ToList();
+
+            response.Days = daysOrdered;
+
+            return response;
         }
 
         public async Task<Guid> CreateScale(CreateScaleDto createScaleDto)
