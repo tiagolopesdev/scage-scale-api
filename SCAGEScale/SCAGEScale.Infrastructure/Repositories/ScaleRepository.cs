@@ -17,7 +17,7 @@ namespace SCAGEScale.Infrastructure.Repositories
             _configuration = configuration;
         }        
 
-        public async Task<Guid> TransitionsScale(List<PropertiesCreateScale> scale, Guid monthId)
+        public async Task<Guid> TransitionsScale(List<PropertiesManipulationMonth> scale, Guid monthId)
         {
             using (var connection = new MySqlConnection(ConnectionString))
             {

@@ -1,5 +1,6 @@
 ﻿
 using SCAGEScale.Application.DTO;
+using SCAGEScale.Application.Extensions;
 using SCAGEScale.Application.QuerySide;
 using SCAGEScale.Application.RepositorySide;
 using SCAGEScale.Application.ServiceSide;
@@ -31,11 +32,11 @@ namespace SCAGEScale.Application.Service
 
                 if (scaleExists != null && scaleExists.Count > 0) throw new Exception($"Escala referente ao mês de {createScaleDto.Name}, já existe.");
 
-                var month = PropertiesCreateScale.PropertiesToCreateMonth(createScaleDto);
+                var month = PropertiesManipulationMonth.PropertiesToCreateMonth(createScaleDto);
 
                 var monthId = (Guid)month.MonthId;
 
-                var scale = PropertiesCreateScale.PropertiesToCreateDay(createScaleDto.Days, monthId);
+                var scale = PropertiesManipulationMonth.PropertiesToCreateDay(createScaleDto.Days.ToAggregateListCreate().ToList(), monthId);
 
                 scale.Insert(0, month);
 
@@ -117,13 +118,27 @@ namespace SCAGEScale.Application.Service
 
         public async Task<Guid> UpdateScale(UpdateScaleDto updateScaleDto)
         {
-            var month = PropertiesCreateScale.PropertiesToUpdateMonth(updateScaleDto);
+            var month = PropertiesManipulationMonth.PropertiesToUpdateMonth(updateScaleDto);
 
-            var scale = PropertiesCreateScale.PropertiesToUpdateDay(updateScaleDto.Days, updateScaleDto.Id);
+            var dayToCreateOrUpdate = new List<PropertiesManipulationMonth>();
 
-            scale.Insert(0, month);
+            var daysToCreate = updateScaleDto.Days.Where(item => item.Id == null).ToList();
 
-            return await _scaleRepository.TransitionsScale(scale, updateScaleDto.Id);
+            dayToCreateOrUpdate.AddRange(PropertiesManipulationMonth.PropertiesToCreateDay(
+                daysToCreate.ToAggregateListUpdate().ToList(),
+                updateScaleDto.Id)
+                );
+
+            var daysToUpdate = updateScaleDto.Days.Where(item => item.Id != null).ToList();
+
+            dayToCreateOrUpdate.AddRange(PropertiesManipulationMonth.PropertiesToUpdateDay(
+                daysToUpdate.ToAggregateListUpdate().ToList(),
+                updateScaleDto.Id)
+                );
+
+            dayToCreateOrUpdate.Insert(0, month);
+
+            return await _scaleRepository.TransitionsScale(dayToCreateOrUpdate, updateScaleDto.Id);
         }
     }
 }

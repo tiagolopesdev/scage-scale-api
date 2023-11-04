@@ -5,6 +5,6 @@ namespace SCAGEScale.Application.RepositorySide
 {
     public interface IScaleRepository
     {
-        public Task<Guid> TransitionsScale(List<PropertiesCreateScale> scale, Guid monthId);
+        public Task<Guid> TransitionsScale(List<PropertiesManipulationMonth> scale, Guid monthId);
     }
 }

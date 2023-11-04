@@ -1,25 +1,26 @@
 ﻿
+using SCAGEScale.Application.AggregateRoot.DayAggregate;
 using SCAGEScale.Application.DTO;
 
 namespace SCAGEScale.Application.VO
 {
-    public class PropertiesCreateScale
+    public class PropertiesManipulationMonth
     {
         public bool IsDay { get; set; }
         public string Sql { get; set; }
         public object Values { get; set; }
         public Guid? MonthId { get; set; }
 
-        public PropertiesCreateScale() { }
+        public PropertiesManipulationMonth() { }
 
-        public PropertiesCreateScale(string sql, object values, Guid? monthId = null)
+        public PropertiesManipulationMonth(string sql, object values, Guid? monthId = null)
         {
             Sql = sql;
             Values = values;
             MonthId = monthId;
         }
 
-        public static PropertiesCreateScale PropertiesToUpdateMonth(UpdateScaleDto month)
+        public static PropertiesManipulationMonth PropertiesToUpdateMonth(UpdateScaleDto month)
         {
             string sql = "UPDATE month SET " +
                     "name = @name, " +
@@ -49,13 +50,13 @@ namespace SCAGEScale.Application.VO
                 modifiedBy = Guid.NewGuid()
             };
 
-            return new PropertiesCreateScale(sql, properties); ;
+            return new PropertiesManipulationMonth(sql, properties); ;
         }
 
-        public static List<PropertiesCreateScale> PropertiesToUpdateDay(List<DayOnlyReferencyUpdateDto> days, 
+        public static List<PropertiesManipulationMonth> PropertiesToUpdateDay(List<DayAggregate> days, 
             Guid monthId)
         {
-            var listDays = new List<PropertiesCreateScale>();
+            var listDays = new List<PropertiesManipulationMonth>();
 
             string sql = "UPDATE day SET " +
                     "name = @name, " +
@@ -85,12 +86,12 @@ namespace SCAGEScale.Application.VO
                     createdBy = Guid.NewGuid()
                 };
 
-                listDays.Add(new PropertiesCreateScale(sql, properties));
+                listDays.Add(new PropertiesManipulationMonth(sql, properties));
             }
             return listDays;
         }
 
-        public static PropertiesCreateScale PropertiesToCreateMonth(CreateScaleDto month)
+        public static PropertiesManipulationMonth PropertiesToCreateMonth(CreateScaleDto month)
         {
             string sql = "INSERT INTO month(" +
                     "id, " +
@@ -125,14 +126,14 @@ namespace SCAGEScale.Application.VO
                 createdBy = Guid.NewGuid()
             };
 
-            var monthProperties = new PropertiesCreateScale(sql, properties, monthId);
+            var monthProperties = new PropertiesManipulationMonth(sql, properties, monthId);
 
             return monthProperties;
         }
 
-        public static List<PropertiesCreateScale> PropertiesToCreateDay(List<DayOnlyReferencyCreateDto> days, Guid monthId)
+        public static List<PropertiesManipulationMonth> PropertiesToCreateDay(List<DayAggregate> days, Guid monthId)
         {
-            var listDays = new List<PropertiesCreateScale>();
+            var listDays = new List<PropertiesManipulationMonth>();
 
             string sql = "INSERT INTO day(" +
                     "id, " +
@@ -170,7 +171,7 @@ namespace SCAGEScale.Application.VO
                     createdBy = Guid.NewGuid()
                 };
 
-                listDays.Add(new PropertiesCreateScale(sql, properties));
+                listDays.Add(new PropertiesManipulationMonth(sql, properties));
             }
             return listDays;
         }
