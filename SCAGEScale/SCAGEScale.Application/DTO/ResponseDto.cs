@@ -1,8 +1,6 @@
-﻿
-
-namespace SCAGEScale.Application.Utils
+﻿namespace SCAGEScale.Application.DTO
 {
-    public class RequestResponse
+    public class ResponseDto
     {
         public string Message { get; set; }
         public object Data { get; set; }
@@ -12,9 +10,9 @@ namespace SCAGEScale.Application.Utils
             return message;
         }
 
-        public static RequestResponse New(string message, object data)
+        public static ResponseDto New(string message, object data)
         {
-            var response = new RequestResponse
+            var response = new ResponseDto
             {
                 Message = message,
                 Data = data

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SCAGEScale.Application.DTO;
 using SCAGEScale.Application.ServiceSide;
-using SCAGEScale.Application.Utils;
 using System.Net;
 
 namespace SCAGEScale.Api.Controllers
@@ -18,29 +17,29 @@ namespace SCAGEScale.Api.Controllers
 
         [HttpGet("{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<RequestResponse>> GetScaleById(Guid id)
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ResponseDto>> GetScaleById(Guid id)
         {
             try
             {
                 var response = await _scaleService.GetScaleById(id);
 
                 return response != null ?
-                    Ok(RequestResponse.New("Sucesso ao obter escala!", response)) :
-                    BadRequest(RequestResponse.Error("Não foi possível obter a escala"));
+                    Ok(ResponseDto.New("Sucesso ao obter escala!", response)) :
+                    BadRequest(ResponseDto.Error("Não foi possível obter a escala"));
             }
             catch (Exception ex)
             {
-                return BadRequest(RequestResponse.Error(ex.Message));
+                return BadRequest(ResponseDto.Error(ex.Message));
             }
         }
 
         [HttpGet("singleScales")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<RequestResponse>> GetAllScalesSingle([FromQuery] string? filter)
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ResponseDto>> GetAllScalesSingle([FromQuery] string? filter)
         {
             try
             {
@@ -49,63 +48,63 @@ namespace SCAGEScale.Api.Controllers
                     await _scaleService.GetAllSingleByFilterScales(filter);
 
                 return response != null ?
-                    Ok(RequestResponse.New("Sucesso ao obter as escalas!", response)) :
-                    BadRequest(RequestResponse.Error("Não foi possível obter as escalas"));
+                    Ok(ResponseDto.New("Sucesso ao obter as escalas!", response)) :
+                    BadRequest(ResponseDto.Error("Não foi possível obter as escalas"));
             }
             catch (Exception ex)
             {
-                return BadRequest(RequestResponse.Error(ex.Message));
+                return BadRequest(ResponseDto.Error(ex.Message));
             }
         }
 
         [HttpPut("updateScale")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<RequestResponse>> UpdateScale([FromBody] UpdateScaleDto updateScaleDto)
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ResponseDto>> UpdateScale([FromBody] UpdateScaleDto updateScaleDto)
         {
             try
             {
                 var response = await _scaleService.UpdateScale(updateScaleDto);
 
-                return Ok(RequestResponse.New("Escala atualizada com sucesso!", response));
+                return Ok(ResponseDto.New("Escala atualizada com sucesso!", response));
             }
             catch (Exception ex)
             {
-                return BadRequest(RequestResponse.Error(ex.Message));
+                return BadRequest(ResponseDto.Error(ex.Message));
             }
         }
 
         [HttpPost("createScale")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<RequestResponse>> CreateScale([FromBody] CreateScaleDto createScaleDto)
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ResponseDto>> CreateScale([FromBody] CreateScaleDto createScaleDto)
         {
             try
             {
                 var response = await _scaleService.CreateScale(createScaleDto);
 
-                return Ok(RequestResponse.New("Escala criada com sucesso!", response));
+                return Ok(ResponseDto.New("Escala criada com sucesso!", response));
             }
             catch (Exception ex)
             {
-                return BadRequest(RequestResponse.Error(ex.Message));
+                return BadRequest(ResponseDto.Error(ex.Message));
             }
         }
 
         [HttpPost("generationScale")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(RequestResponse), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<RequestResponse>> PreviewScale([FromBody] PreviewDto previewDto)
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ResponseDto>> PreviewScale([FromBody] PreviewDto previewDto)
         {
             try
             {
                 var response = await _scaleService.PreviewScale(previewDto);
 
-                return Ok(RequestResponse.New("Pré-visualização da escala gerada", response));
+                return Ok(ResponseDto.New("Pré-visualização da escala gerada", response));
 
             }catch (Exception ex)
             {
-                return BadRequest(RequestResponse.Error(ex.Message));
+                return BadRequest(ResponseDto.Error(ex.Message));
             }
         }
     }

@@ -99,34 +99,6 @@ namespace SCAGEScale.Infrastructure.Queries
             }
         }
 
-        public async Task<List<ScaleDto>> GetAllScales()
-        {
-            using (var connection = new MySqlConnection(ConnectionString))
-            {
-                try
-                {
-                    var response = await connection.QueryAsync<ReferencyUser>(
-                        "SELECT " +
-                            "u.id as Id, " +
-                            "u.name as Name, " +
-                            "u.email as Email, " +
-                            "u.sex as Sex " +
-                            "u.isEnable AS IsEnable " +
-                        "FROM users as u " +
-                        "WHERE isEnable = 1 AND u.id = @id;");
-
-                    if (response.Count() == 0) return null;
-
-                    throw new NotImplementedException();
-                    //return response.ToList();
-                }
-                catch (Exception ex)
-                {
-
-                }
-            }
-            throw new NotImplementedException();
-        }
         public async Task<List<ScaleMonthDto>> ScaleMonthMakedList(List<ScaleDay> scaleDays)
         {
             var scaleMonthList = new List<ScaleMonthDto>();

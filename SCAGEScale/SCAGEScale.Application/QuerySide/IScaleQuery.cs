@@ -6,7 +6,6 @@ namespace SCAGEScale.Application.QuerySide
 {
     public interface IScaleQuery
     {
-        public Task<List<ScaleDto>> GetAllScales();
         public Task<List<ScaleDto>?> GetAllSingleByFilterScales(string filter);
         public Task<List<ScaleDto>?> GetAllSingleScales();
         public Task<ScaleDto> GetScaleById(Guid id);
