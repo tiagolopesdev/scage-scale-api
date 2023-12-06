@@ -146,5 +146,77 @@ namespace SCAGEScale.Application.Service
 
             return await _scaleRepository.TransitionsScale(dayToCreateOrUpdate, updateScaleDto.Id);
         }
+
+        public List<EventsGeneratedDTO> GenerationDays(GenerationDaysDTO request)
+        {
+            bool[] days = { false, false, false, false, false, false, false };
+
+            foreach (var item in request.Days)
+            {
+                switch (item.Day)
+                {
+                    case DayOfWeek.Sunday:
+                        days[0] = true;
+                        break;
+                    case DayOfWeek.Monday:
+                        days[1] = true;
+                        break;
+                    case DayOfWeek.Tuesday:
+                        days[2] = true;
+                        break;
+                    case DayOfWeek.Wednesday:
+                        days[3] = true;
+                        break;
+                    case DayOfWeek.Thursday:
+                        days[4] = true;
+                        break;
+                    case DayOfWeek.Friday:
+                        days[5] = true;
+                        break;
+                    case DayOfWeek.Saturday:
+                        days[6] = true;
+                        break;
+                }
+            }
+
+            List<EventsGeneratedDTO> daysFounded = new();
+
+            DateTime dateToCompare = request.PeriodStart.Date;
+
+            while (dateToCompare <= request.PeriodEnd)
+            {
+                if (DayExtension.DayIsMatching(dateToCompare.DayOfWeek, DayOfWeek.Sunday, days[0]))
+                {
+                    daysFounded.Add(DayExtension.InclusionMatchingDay(dateToCompare, request.Days, DayOfWeek.Sunday));
+                }
+                else if (DayExtension.DayIsMatching(dateToCompare.DayOfWeek, DayOfWeek.Monday, days[1]))
+                {
+                    daysFounded.Add(DayExtension.InclusionMatchingDay(dateToCompare, request.Days, DayOfWeek.Monday));
+                }
+                else if (DayExtension.DayIsMatching(dateToCompare.DayOfWeek, DayOfWeek.Tuesday, days[2]))
+                {
+                    daysFounded.Add(DayExtension.InclusionMatchingDay(dateToCompare, request.Days, DayOfWeek.Tuesday));
+                }
+                else if (DayExtension.DayIsMatching(dateToCompare.DayOfWeek, DayOfWeek.Wednesday, days[3]))
+                {
+                    daysFounded.Add(DayExtension.InclusionMatchingDay(dateToCompare, request.Days, DayOfWeek.Wednesday));
+                }
+                else if (DayExtension.DayIsMatching(dateToCompare.DayOfWeek, DayOfWeek.Thursday, days[4]))
+                {
+                    daysFounded.Add(DayExtension.InclusionMatchingDay(dateToCompare, request.Days, DayOfWeek.Thursday));
+                }
+                else if (DayExtension.DayIsMatching(dateToCompare.DayOfWeek, DayOfWeek.Friday, days[5]))
+                {
+                    daysFounded.Add(DayExtension.InclusionMatchingDay(dateToCompare, request.Days, DayOfWeek.Friday));
+                }
+                else if (DayExtension.DayIsMatching(dateToCompare.DayOfWeek, DayOfWeek.Saturday, days[6]))
+                {
+                    daysFounded.Add(DayExtension.InclusionMatchingDay(dateToCompare, request.Days, DayOfWeek.Saturday));
+                }
+
+                dateToCompare = dateToCompare.AddDays(1);
+            }
+            return daysFounded;
+        }
     }
 }

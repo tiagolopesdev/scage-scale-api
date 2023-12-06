@@ -1,11 +1,25 @@
-﻿
-using SCAGEScale.Application.AggregateRoot.DayAggregate;
+﻿using SCAGEScale.Application.AggregateRoot.DayAggregate;
 using SCAGEScale.Application.DTO;
 
 namespace SCAGEScale.Application.Extensions
 {
     public static class DayExtension
     {
+        public static EventsGeneratedDTO InclusionMatchingDay(DateTime date, List<DaysGenerate> days, DayOfWeek dayOfWeek)
+        {
+            var daySelected = days.Find(item => item.Day == dayOfWeek);
+
+            DateTime dateToInclude = new(date.Year, date.Month,
+                        date.Day, daySelected.Time.Hour, daySelected.Time.Minute,
+                        daySelected.Time.Second
+                        );
+
+            return EventsGeneratedDTO.New(daySelected.NameEvent, dateToInclude);
+        }
+        public static bool DayIsMatching(DayOfWeek dayOfWeekCompare, DayOfWeek dayOfWeek, bool dayActive) 
+        {
+            return dayOfWeekCompare == dayOfWeek && dayActive;
+        }
         public static DayAggregate ToAggregateCreate(this DayOnlyReferencyCreateDto day)
         {
             return DayAggregate.New(

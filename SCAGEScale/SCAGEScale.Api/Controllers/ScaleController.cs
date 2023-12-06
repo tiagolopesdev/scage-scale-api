@@ -107,5 +107,22 @@ namespace SCAGEScale.Api.Controllers
                 return BadRequest(ResponseDto.Error(ex.Message));
             }
         }
+        
+        [HttpPost("generationDays")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(ResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ResponseDto>> GenerationDaysScale([FromBody] GenerationDaysDTO request)
+        {
+            try
+            {
+                var response = _scaleService.GenerationDays(request);
+
+                return Ok(ResponseDto.New("Pré-visualização da escala gerada", response));
+
+            }catch (Exception ex)
+            {
+                return BadRequest(ResponseDto.Error(ex.Message));
+            }
+        }
     }
 }

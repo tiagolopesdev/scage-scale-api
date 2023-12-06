@@ -45,6 +45,8 @@ namespace SCAGEScale.Application.Extensions
 
             var dayList = new List<DayDto>();
 
+            var userTest = UserDto.New(Guid.NewGuid(), "dsds", "dsdsds", "Masculino", true);
+
             foreach (var item in dayGroup)
             {
                 var cameraOne = UserDto.New(
@@ -94,13 +96,12 @@ namespace SCAGEScale.Application.Extensions
 
             foreach (var aggregate in singleScaleAggregates)
             {
-                var isEnable = aggregate.IsEnable ? 1 : 0;
 
                 listScaleDto.Add(ScaleDto.New(
                     aggregate.Id,
                     aggregate.Name,
                     aggregate.Transmissions,
-                    isEnable,
+                    aggregate.IsEnable,
                     aggregate.Start,
                     aggregate.End,
                     aggregate.Status.ToString())
