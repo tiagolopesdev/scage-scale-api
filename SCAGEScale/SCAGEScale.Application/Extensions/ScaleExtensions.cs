@@ -45,8 +45,6 @@ namespace SCAGEScale.Application.Extensions
 
             var dayList = new List<DayDto>();
 
-            var userTest = UserDto.New(Guid.NewGuid(), "dsds", "dsdsds", "Masculino", true);
-
             foreach (var item in dayGroup)
             {
                 var cameraOne = UserDto.New(
