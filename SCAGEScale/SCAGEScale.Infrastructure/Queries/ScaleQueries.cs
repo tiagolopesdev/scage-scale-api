@@ -158,8 +158,8 @@ namespace SCAGEScale.Infrastructure.Queries
                             "m.end as End, " +
                             "m.isEnable AS IsEnable " +
                         "FROM month AS m " +
-                        "WHERE m.isEnable = true AND m.name LIKE @filter;",
-                        new { filter }
+                        "WHERE m.isEnable = true AND m.name LIKE @nameFilter;",
+                        new { nameFilter = $"%{filter}%" }
                     );
 
                     return response.Count() == 0 ? null : response.ToDTOList();
