@@ -9,9 +9,10 @@ namespace SCAGEScale.Application.AggregateRoot.DayAggregate
         public Guid CameraOne { get; set; }
         public Guid CameraTwo { get; set; }
         public Guid CutDesk { get; set; }
+        public string? LiveStreamId { get; set; }
         public bool IsEnable { get; set; }
 
-        public static DayAggregate New(Guid id, string name, DateTime date, Guid cameraOne, Guid cameraTwo, Guid cutDesk, bool isEnable = true)
+        public static DayAggregate New(Guid id, string name, DateTime date, Guid cameraOne, Guid cameraTwo, Guid cutDesk, bool isEnable = true, string? liveStreamId = null)
         {
             return new DayAggregate
             {
@@ -21,6 +22,7 @@ namespace SCAGEScale.Application.AggregateRoot.DayAggregate
                 CameraOne = cameraOne,
                 CameraTwo = cameraTwo,
                 CutDesk = cutDesk,
+                LiveStreamId = liveStreamId,
                 IsEnable = isEnable
             };
         }

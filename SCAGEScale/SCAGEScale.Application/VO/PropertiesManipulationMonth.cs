@@ -66,6 +66,7 @@ namespace SCAGEScale.Application.VO
                     "cutDesk = @cutDesk, " +
                     "month = @month, " +
                     "isEnable = @isEnable, " +
+                    "liveStreamId = @liveStreamId, " +
                     "modifiedOn = @modifiedOn, " +
                     "modifiedBy = @modifiedBy " +
                 "WHERE id = @id"; 
@@ -82,6 +83,7 @@ namespace SCAGEScale.Application.VO
                     cutDesk = day.CutDesk,
                     month = monthId,
                     isEnable = day.IsEnable,
+                    liveStreamId = day.LiveStreamId,
                     createdOn = DateTime.Now,
                     createdBy = Guid.NewGuid()
                 };

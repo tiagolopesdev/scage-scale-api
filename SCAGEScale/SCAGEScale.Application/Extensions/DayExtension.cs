@@ -51,7 +51,8 @@ namespace SCAGEScale.Application.Extensions
                     day.CameraOne,
                     day.CameraTwo,
                     day.CutDesk,
-                    day.IsEnable
+                    day.IsEnable,
+                    day.LiveStreamId
                     );
         }
         public static IEnumerable<DayAggregate> ToAggregateListUpdate(this List<DayOnlyReferencyUpdateDto> days)
