@@ -11,8 +11,12 @@ namespace SCAGEScale.Application.DTO
         public UserDto CameraTwo { get; set; }
         public UserDto CutDesk { get; set; }
         public bool IsEnable { get; set; }
+        public string? LiveStreamId { get; set; }
 
-        public static DayDto New(Guid id, string name, DateTime dateTime, Guid month, bool isEnable, UserDto cameraOne, UserDto cameraTwo, UserDto cutDesk)
+        public static DayDto New(Guid id, string name, DateTime dateTime, Guid month, 
+            bool isEnable, UserDto cameraOne, UserDto cameraTwo, UserDto cutDesk,
+            string? liveStreamId
+            )
         {
             var dtoToReturn = new DayDto
             {
@@ -23,7 +27,8 @@ namespace SCAGEScale.Application.DTO
                 IsEnable = isEnable,
                 CameraOne = cameraOne,
                 CameraTwo = cameraTwo,
-                CutDesk = cutDesk
+                CutDesk = cutDesk,
+                LiveStreamId = liveStreamId
             };
             return dtoToReturn;
         }

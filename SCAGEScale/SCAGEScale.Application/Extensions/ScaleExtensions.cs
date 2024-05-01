@@ -15,6 +15,7 @@ namespace SCAGEScale.Application.Extensions
                 x.DateDay,
                 x.Month,
                 x.IsEnableDay,
+                x.LiveStreamId,
                 x.IdUserOne,
                 x.NameUserOne,
                 x.EmailUserOne,
@@ -77,7 +78,8 @@ namespace SCAGEScale.Application.Extensions
                     item.Key.IsEnableDay,
                     cameraOne,
                     cameraTwo,
-                    cutDesk
+                    cutDesk,
+                    item.Key.LiveStreamId
                     ));
             }
 

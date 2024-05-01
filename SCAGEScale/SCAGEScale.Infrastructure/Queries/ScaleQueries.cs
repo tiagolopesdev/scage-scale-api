@@ -39,6 +39,7 @@ namespace SCAGEScale.Infrastructure.Queries
                             "d.date as DateDay, " +
                             "d.month as Month, " +
                             "d.isEnable AS IsEnableDay, " +
+                            "d.liveStreamId AS LiveStreamId, " +
                             "userOne.id as IdUserOne, " +
                             "userOne.name as NameUserOne, " +
                             "userOne.email as EmailUserOne, " +
