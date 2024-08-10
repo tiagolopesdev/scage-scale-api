@@ -6,17 +6,19 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["SCAGEScale/SCAGEScale.Api/SCAGEScale.Api.csproj", "SCAGEScale/SCAGEScale.Api/"]
 COPY ["SCAGEScale/SCAGEScale.Application/SCAGEScale.Application.csproj", "SCAGEScale/SCAGEScale.Application/"]
 COPY ["SCAGEScale/SCAGEScale.Infrastructure/SCAGEScale.Infrastructure.csproj", "SCAGEScale/SCAGEScale.Infrastructure/"]
-RUN dotnet restore "SCAGEScale/SCAGEScale.Api/SCAGEScale.Api.csproj"
+RUN dotnet restore "./SCAGEScale/SCAGEScale.Api/SCAGEScale.Api.csproj"
 COPY . .
 WORKDIR "/src/SCAGEScale/SCAGEScale.Api"
-RUN dotnet build "SCAGEScale.Api.csproj" -c Release -o /app/build
+RUN dotnet build "./SCAGEScale.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SCAGEScale.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./SCAGEScale.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
